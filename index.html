@@ -161,33 +161,36 @@
     ];
 
     function checkEligibility() {
-      const input = document.getElementById('walletAddress').value.trim().toLowerCase();
-      const resultDiv = document.getElementById('result');
+  const input = document.getElementById('walletAddress').value.trim().toLowerCase();
+  const resultDiv = document.getElementById('result');
 
-      if (input === "") {
-        resultDiv.textContent = "⚠️ Please enter a wallet address.";
-        resultDiv.style.color = "#ffcc00";
-        return;
-      }
+  if (input === "") {
+    resultDiv.textContent = "⚠️ Please enter a wallet address.";
+    resultDiv.style.color = "#ffcc00";
+    return;
+  }
 
-      // Show loading animation
-      resultDiv.textContent = "Checking eligibility...";
-      resultDiv.classList.add('loading');
-      resultDiv.style.color = "#00ffff";
+  // Show loading animation
+  resultDiv.textContent = "Checking eligibility...";
+  resultDiv.classList.add('loading');
+  resultDiv.style.color = "#00ffff";
 
-      // Simulate checking delay
-      setTimeout(() => {
-        resultDiv.classList.remove('loading');
+  setTimeout(() => {
+    resultDiv.classList.remove('loading');
 
-        if (eligibleAddresses.includes(input)) {
-          resultDiv.textContent = "✅ You are eligible for $REAL!";
-          resultDiv.style.color = "#00ff00";
-        } else {
-          resultDiv.textContent = "❌ Sorry, you are not eligible.";
-          resultDiv.style.color = "#ff0000";
-        }
-      }, 1500); // 1.5 seconds
+    // Convert eligible addresses to lowercase on the fly
+    const normalizedAddresses = eligibleAddresses.map(addr => addr.toLowerCase());
+
+    if (normalizedAddresses.includes(input)) {
+      resultDiv.textContent = "✅ You are eligible for $REAL!";
+      resultDiv.style.color = "#00ff00";
+    } else {
+      resultDiv.textContent = "❌ Sorry, you are not eligible.";
+      resultDiv.style.color = "#ff0000";
     }
+  }, 1500);
+}
+
   </script>
 </body>
 </html>
