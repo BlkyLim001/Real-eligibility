@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>$REAL Eligibility Checker</title>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500&display=swap" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Orbitron', sans-serif;
+      background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+      background-size: 600% 600%;
+      animation: gradientBG 10s ease infinite;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: #fff;
+      text-align: center;
+    }
+
+    @keyframes gradientBG {
+      0% {background-position: 0% 50%;}
+      50% {background-position: 100% 50%;}
+      100% {background-position: 0% 50%;}
+    }
+
+    .overlay {
+      background: rgba(255, 255, 255, 0.1);
+      box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      border-radius: 20px;
+      padding: 3rem 2rem;
+      width: 90%;
+      max-width: 400px;
+    }
+
+    h1 {
+      font-size: 2.5rem;
+      margin-bottom: 1rem;
+    }
+
+    p {
+      font-size: 1.1rem;
+      margin-bottom: 2rem;
+    }
+
+    input[type="text"] {
+      padding: 0.8rem;
+      width: 100%;
+      border: 2px solid #00ffff;
+      background: transparent;
+      border-radius: 10px;
+      margin-bottom: 1.5rem;
+      font-size: 1rem;
+      color: #00ffff;
+      text-align: center;
+      outline: none;
+    }
+    input::placeholder {
+      color: #aaa;
+    }
+
+    button {
+      padding: 0.8rem 2rem;
+      background: linear-gradient(90deg, #ff0080, #7928ca);
+      border: none;
+      border-radius: 10px;
+      color: white;
+      font-size: 1.1rem;
+      cursor: pointer;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      width: 100%;
+    }
+    button:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 20px #ff0080;
+    }
+
+    #result {
+      margin-top: 1.5rem;
+      font-size: 1.3rem;
+      min-height: 2rem;
+    }
+    .loading {
+      animation: blink 1s infinite;
+    }
+    @keyframes blink {
+      0% { opacity: 1; }
+      50% { opacity: 0.5; }
+      100% { opacity: 1; }
+    }
+
+    footer {
+      margin-top: 2rem;
+      font-size: 0.8rem;
+      color: #ccc;
+    }
+
+    @media (max-width: 480px) {
+      h1 {
+        font-size: 2rem;
+      }
+      p {
+        font-size: 1rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="overlay">
+    <h1>$REAL Eligibility</h1>
+    <p>Enter your wallet address below to check eligibility.</p>
+    <input type="text" id="walletAddress" placeholder="0xYourWalletAddress" />
+    <button onclick="checkEligibility()">Check Eligibility</button>
+    <div id="result"></div>
+    <footer>
+      &copy; 2025 $REAL Token. All rights reserved.
+    </footer>
+  </div>
+
+  <script>
+    // List of eligible wallet addresses
+    const eligibleAddresses = [
+      "0xC80E9c44f3a63ecCED04560c471BBCF967C12255",
+      "0xE0516c17Bc87F151EE0B7b9431aF7f4A2523E0e9",
+      "0x469cadA66004Ab14669F3fc496EB82Bb20e3520b",
+      "0x9bEab23899FF8aA6DE241d21904687318f4aDf18",
+      "0x2100557322D7dd6D70306b6D9fD5b9B3Fcff5881",
+      "0xD40874abbE7052B68B4aaeF3eaBc0c0ed291D04B",
+      "0xb13D71137fafD3407e822d202FF777CE6b40413b",
+      "0x594B35E65915990b3c751EA8B22E8b21fB38b48c",
+      "0x40f7275ad8d918d29e095f38de7e28364b84e4e0",
+      "0x2f19de383b722f929d8d2ebaa5c3c406bce766f3",
+      "0x235C3EB08E8cAADF7d9975eb073e060868ae0Cd6",
+      "0x62c44b5c195261287117a69be14f3f0256346b63",
+      "0x59a59e1f7D87A9C5cCa868dda785Dc1e68Ec6910",
+      "0x803ffe3bb889a2ec95b55584a9bb5a2404dfd92f",
+      "0x23f04db5370d0C41BBF7696E45e4c260446F8f58",
+      "0x1d40d006cD76bb58248b6ca5c1f277524eE3622A",
+      "0x539744E74BBAb1f01D1F1566116c83d547Bc1977",
+    ];
+
+    function checkEligibility() {
+      const input = document.getElementById('walletAddress').value.trim().toLowerCase();
+      const resultDiv = document.getElementById('result');
+
+      if (input === "") {
+        resultDiv.textContent = "⚠️ Please enter a wallet address.";
+        resultDiv.style.color = "#ffcc00";
+        return;
+      }
+
+      // Show loading animation
+      resultDiv.textContent = "Checking eligibility...";
+      resultDiv.classList.add('loading');
+      resultDiv.style.color = "#00ffff";
+
+      // Simulate checking delay
+      setTimeout(() => {
+        resultDiv.classList.remove('loading');
+
+        if (eligibleAddresses.includes(input)) {
+          resultDiv.textContent = "✅ You are eligible for $REAL!";
+          resultDiv.style.color = "#00ff00";
+        } else {
+          resultDiv.textContent = "❌ Sorry, you are not eligible.";
+          resultDiv.style.color = "#ff0000";
+        }
+      }, 1500); // 1.5 seconds
+    }
+  </script>
+</body>
+</html>
